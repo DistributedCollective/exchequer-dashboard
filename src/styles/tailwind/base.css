@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+@layer base {
+    html {
+        background-color: #222222;
+    }
+
+    body {
+        font-family: 'Montserrat', sans-serif;
+        @apply text-light bg-dark;
+    }
+
+    body.dialog-open {
+        @apply overflow-hidden;
+    }
+
+    h1 {
+        @apply text-3xl font-normal;
+    }
+
+    code {
+        @apply bg-dark rounded p-3 font-light text-base;
+        font-family: Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;
+    }
+
+    input {
+        background: transparent;
+        @apply px-6 py-3;
+        @apply border border-light rounded-xl;
+        @apply text-light;
+        @apply placeholder-light;
+    }
+
+    input:focus {
+        @apply placeholder-opacity-50 outline-none ring;
+    }
+
+    button {
+        @apply text-light whitespace-nowrap	px-4 py-2;
+    }
+}

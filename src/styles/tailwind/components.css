@@ -1,0 +1,58 @@
+@layer components {
+    .btn-primary {
+        @apply bg-yellow border border-yellow bg-yellow-light font-semibold text-yellow;
+        @apply px-6 py-2;
+        @apply rounded-3xl;
+        @apply transition duration-300;
+    }
+
+    .btn-primary:hover {
+        @apply bg-opacity-5;
+    }
+
+    .btn-primary:disabled {
+        @apply bg-yellow-light opacity-50 cursor-not-allowed;
+    }
+
+    .btn-secondary {
+        @apply text-yellow border-b border-yellow;
+        @apply px-6 py-2;
+        @apply transition duration-300;
+    }
+
+    .btn-secondary:hover {
+        @apply text-opacity-75;
+    }
+
+    .btn-secondary:disabled {
+        @apply text-yellow opacity-50 cursor-not-allowed;
+    }
+
+    .btn-toggler {
+        @apply w-5 h-5 p-0 rounded;
+        @apply transition duration-300;
+        background: url("../../assets/expand_more.svg") center center no-repeat;
+    }
+
+    .btn-toggler__open {
+        @apply bg-light;
+        background-image: url("../../assets/expand_less.svg");
+    }
+
+    .dialog-wrapper {
+        @apply fixed inset-0;
+    }
+
+    .dialog--backdrop {
+        @apply fixed inset-0;
+        @apply bg-black bg-opacity-50;
+    }
+
+    .dialog--container {
+        @apply overflow-y-auto;
+    }
+
+    .dialog {
+        @apply bg-dark my-16 px-12 py-8 rounded-lg border border-light;
+    }
+}
