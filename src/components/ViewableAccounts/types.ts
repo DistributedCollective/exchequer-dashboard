@@ -1,4 +1,7 @@
-export type AccountType = 'confirmed' | 'pending_for_approval' | 'pending_for_removal';
+export type AccountType =
+  | 'confirmed'
+  | 'pending_for_approval'
+  | 'pending_for_removal';
 
 export type ViewableAccount = {
   id: number;
@@ -7,7 +10,7 @@ export type ViewableAccount = {
   chainId: number;
   tokens: ViewableAccountToken[];
   status: AccountType;
-}
+};
 
 export type ViewableAccountToken = {
   name: string;

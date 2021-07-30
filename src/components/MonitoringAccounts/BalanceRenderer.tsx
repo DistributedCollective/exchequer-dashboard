@@ -31,6 +31,8 @@ export function BalanceRenderer(props: Props) {
   }, [diff]);
 
   return (
-    <span className={className} title={`Difference is ${diff.toFixed(2)} %.`}>{props.balance}</span>
+    <span className={className} title={`Difference is ${diff.toFixed(2)} %.`}>
+      {props.balance}
+    </span>
   );
 }

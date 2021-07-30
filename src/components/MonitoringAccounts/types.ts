@@ -1,4 +1,7 @@
-export type AccountType = 'confirmed' | 'pending_for_approval' | 'pending_for_removal';
+export type AccountType =
+  | 'confirmed'
+  | 'pending_for_approval'
+  | 'pending_for_removal';
 
 export type MonitoringAccount = {
   id: number;
@@ -10,4 +13,4 @@ export type MonitoringAccount = {
   decimals: number;
   balance: string;
   threshold: string;
-}
+};

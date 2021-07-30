@@ -4,12 +4,7 @@ import './styles/tailwind/index.css';
 import reportWebVitals from './reportWebVitals';
 import { Homepage } from './pages/Homepage';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Homepage />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+ReactDOM.render(<Homepage />, document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

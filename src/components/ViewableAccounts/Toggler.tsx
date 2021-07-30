@@ -7,5 +7,12 @@ interface Props {
 }
 
 export function Toggler(props: Props) {
-  return (<button className={cn("btn-toggler", props.isOpen && 'btn-toggler__open')} onClick={props.onClick}><span className="sr-only">Expand</span></button>);
+  return (
+    <button
+      className={cn('btn-toggler', props.isOpen && 'btn-toggler__open')}
+      onClick={props.onClick}
+    >
+      <span className="sr-only">Expand</span>
+    </button>
+  );
 }

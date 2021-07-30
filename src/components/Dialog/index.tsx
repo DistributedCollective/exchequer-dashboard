@@ -8,7 +8,6 @@ interface DialogProps {
 }
 
 export function Dialog(props: DialogProps) {
-
   const [el, setElement] = useState<HTMLElement>();
 
   useLayoutEffect(() => {
@@ -37,14 +36,13 @@ export function Dialog(props: DialogProps) {
           <div className="dialog--backdrop" />
           <div className="container relative">
             <div className="dialog--container">
-              <div className="dialog">
-                {props.children}
-              </div>
+              <div className="dialog">{props.children}</div>
             </div>
           </div>
         </div>
-      )
-      , el);
+      ),
+      el,
+    );
   }
 
   return null;
