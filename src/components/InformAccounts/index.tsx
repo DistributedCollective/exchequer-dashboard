@@ -9,9 +9,10 @@ interface InformProps {
   onClose?: () => void;
   accountName: string;
   accountAddress: string;
+  type?: string;
 }
 
-export function MonitoringAccountInform(props: InformProps) {
+export function InformAccounts(props: InformProps) {
   const [visible, setVisible] = useState(true);
   const closeInform = useCallback(() => {
     setVisible(prevState => !prevState);
@@ -68,7 +69,7 @@ export function MonitoringAccountInform(props: InformProps) {
                   onClick={approveAccount}
                 />
                 <Button
-                  text="Agains"
+                  text="Decline"
                   className="mr-3"
                   primary
                   onClick={agaistAccount}

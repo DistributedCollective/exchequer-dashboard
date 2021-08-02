@@ -1,7 +1,6 @@
 import React from 'react';
 import { ViewableWallet } from './ViewableAccountItem';
 import type { ViewableAccount } from './types';
-import { Button } from '../Button';
 import { Legend } from '../Legend';
 
 const items: ViewableAccount[] = [
@@ -126,7 +125,6 @@ const items: ViewableAccount[] = [
 export function ViewableAccountsList() {
   return (
     <>
-      <Button text="Add Account" primary className="mt-3 mb-4" />
       <Legend title="Viewing" />
       <div className="px-4 my-4">
         <div className="flex flex-row space-x-4 justify-start items-center font-medium text-sm">
