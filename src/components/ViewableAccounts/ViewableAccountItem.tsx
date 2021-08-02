@@ -42,8 +42,11 @@ export function ViewableWallet({ item }: Props) {
       {expanded && (
         <div className="mt-8 pl-2 lg:pl-24 max-h-56 overflow-y-auto">
           {item.tokens.length > 0 ? (
-            item.tokens.map(token => (
-              <div className="w-full flex flex-row justify-start items-center space-x-4 mb-4">
+            item.tokens.map((token, index) => (
+              <div
+                key={index}
+                className="w-full flex flex-row justify-start items-center space-x-4 mb-4"
+              >
                 <div className="w-2/5 lg:w-36 flex-shrink-0 flex flex-row justify-start items-center space-x-4">
                   <AssetLogo
                     address={'0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'}
