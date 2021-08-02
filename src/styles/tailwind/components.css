@@ -1,13 +1,13 @@
 @layer components {
     .btn-primary {
-        @apply bg-yellow border border-yellow bg-yellow-light font-semibold text-yellow;
+        @apply bg-yellow border border-yellow bg-opacity-25 font-semibold text-yellow;
         @apply px-4 py-2;
         @apply rounded-3xl;
         @apply transition duration-300;
     }
 
     .btn-primary:hover {
-        @apply bg-opacity-5;
+        @apply bg-opacity-10;
     }
 
     .btn-primary:disabled {
