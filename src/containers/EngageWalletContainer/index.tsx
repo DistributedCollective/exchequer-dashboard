@@ -42,7 +42,7 @@ function WalletConsumer() {
       )}
       <div className={cn('dialog-wrapper', connecting ? 'block' : 'hidden')}>
         <div className="dialog--backdrop" />
-        <div className="container relative">
+        <div className="container relative flex items-center justify-center h-screen">
           <div id="wallet-connection-target" />
         </div>
       </div>

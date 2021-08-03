@@ -4,6 +4,7 @@ import { MonitoringAccountList } from '../components/MonitoringAccounts/Monitori
 import { EngageWallet } from '../containers/EngageWalletContainer/loadable';
 import { NewProposalContainer } from '../containers/NewProposalContainer/loadable';
 import { useAuthContext } from '../containers/AuthContainer';
+import { InformAccounts } from '../components/InformAccounts';
 
 export function Homepage() {
   const { wallet } = useAuthContext();
@@ -12,6 +13,10 @@ export function Homepage() {
       <div className="container pt-4 text-right">
         <EngageWallet />
       </div>
+      <InformAccounts
+        accountName="Account Name"
+        accountAddress="0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e038"
+      />
       <div className="container pt-28">
         <h1 className="mb-16">Viewing & Monitoring Panel</h1>
         {wallet?.connected && <NewProposalContainer />}
