@@ -1,10 +1,12 @@
 import React, { ReactNode, useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import cn from 'classnames';
 
 interface DialogProps {
   children: ReactNode;
   isOpen?: boolean;
   onClose?: () => void;
+  className?: string;
 }
 
 export function Dialog(props: DialogProps) {
@@ -35,7 +37,7 @@ export function Dialog(props: DialogProps) {
         <div className="dialog-wrapper">
           <div className="dialog--backdrop" />
           <div className="container relative">
-            <div className="dialog--container">
+            <div className={cn('dialog--container', props.className)}>
               <div className="dialog">{props.children}</div>
             </div>
           </div>

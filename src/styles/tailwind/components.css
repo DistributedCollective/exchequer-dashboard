@@ -55,4 +55,16 @@
     .dialog {
         @apply bg-dark my-16 px-12 py-8 rounded-lg border border-light;
     }
+
+    .dialog--container__mini .dialog {
+        max-width: 400px;
+    }
+
+    .form-group {
+        @apply mb-6;
+    }
+
+    .form-group label {
+        @apply block text-sm mb-2;
+    }
 }

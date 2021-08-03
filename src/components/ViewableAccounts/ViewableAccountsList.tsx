@@ -125,7 +125,7 @@ const items: ViewableAccount[] = [
 export function ViewableAccountsList() {
   return (
     <>
-      <Legend title="Viewing" />
+      <Legend title="Viewing" className="my-12" />
       <div className="px-4 my-4">
         <div className="flex flex-row space-x-4 justify-start items-center font-medium text-sm">
           <div className="w-8 lg:w-24 flex-shrink-0" />
