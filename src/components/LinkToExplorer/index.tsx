@@ -19,7 +19,7 @@ export function LinkToExplorer(props: Props) {
   return (
     <a
       href={url}
-      className="truncate"
+      className="truncate hover:underline"
       target="_blank"
       rel="noreferrer noopener"
     >

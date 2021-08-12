@@ -1,5 +1,6 @@
 import React from 'react';
 import { ViewableAccountsList } from '../components/ViewableAccounts/ViewableAccountsList';
+import { PendingAccountsList } from '../components/PendingAccounts/PendingAccountsList';
 import { MonitoringAccountList } from '../components/MonitoringAccounts/MonitoringAccountList';
 import { EngageWallet } from '../containers/EngageWalletContainer/loadable';
 import { NewProposalContainer } from '../containers/NewProposalContainer/loadable';
@@ -22,6 +23,7 @@ export function Homepage() {
       <div className="container pt-28">
         <h1 className="mb-16">Viewing & Monitoring Panel</h1>
         {wallet?.connected && <NewProposalContainer />}
+        <PendingAccountsList />
         <ViewableAccountsList />
         <MonitoringAccountList />
       </div>

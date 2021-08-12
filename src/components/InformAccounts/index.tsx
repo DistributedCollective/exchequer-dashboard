@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Button } from '../Button';
-import iconClose from '../../assets/icon-close.svg';
 import { Dialog } from '../Dialog';
+import { ReactComponent as IconClose } from '../../assets/icon-close.svg';
 
 //todo
 //update props
@@ -37,7 +37,7 @@ export function InformAccounts(props: InformProps) {
             <Button
               className="p-1 w-6 absolute right-3 top-3"
               title="Close"
-              text={<img src={iconClose} alt="close" />}
+              text={<IconClose />}
               onClick={closeInform}
             />
             <h3 className="text-xl font-semibold leading-6 mb-6 pr-4 sm:pr-0">

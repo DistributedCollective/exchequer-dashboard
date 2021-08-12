@@ -15,8 +15,8 @@ module.exports = {
       dark: '#222222', // background
       light: '#E9EAE9', // text
       yellow: {
-        DEFAULT: '#FED559', // button (borders, text)
-        light: '#FED55940', // button (bg)
+        DEFAULT: '#FEC004', // button (borders, text)
+        light: '#FEC00440', // button (bg)
       },
       green: '#47D43D',
       red: '#FF4B4B',
@@ -31,5 +31,15 @@ module.exports = {
       opacity: ['disabled'],
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        '.container': {
+          '@screen xl': {
+            maxWidth: '1296px',
+          },
+        },
+      });
+    },
+  ],
 };

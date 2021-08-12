@@ -1,17 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ViewableWallet } from './ViewableAccountItem';
 import type { ViewableAccount } from './types';
 import { Legend } from '../Legend';
+import cn from 'classnames';
+import { ReactComponent as IconExpand } from '../../assets/icon-expand.svg';
 
 const items: ViewableAccount[] = [
-  {
-    id: 0,
-    name: 'Account #0',
-    status: 'pending_for_approval',
-    address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e030',
-    chainId: 1,
-    tokens: [],
-  },
   {
     id: 1,
     name: 'Account #1',
@@ -123,19 +117,52 @@ const items: ViewableAccount[] = [
 ];
 
 export function ViewableAccountsList() {
+  const [isListVisible, setIsListVisible] = useState<boolean>(true);
+  const toggleListVisibility = () => {
+    setIsListVisible(!isListVisible);
+  };
   return (
     <>
-      <Legend title="Viewing" className="my-12" />
-      <div className="px-4 my-4">
-        <div className="flex flex-row space-x-4 justify-start items-center font-medium text-sm">
-          <div className="w-8 lg:w-24 flex-shrink-0" />
-          <div className="w-full lg:w-48 lg:flex-shrink-0">Account Name</div>
-          <div className="hidden lg:block lg:flex-grow">Account Address</div>
-        </div>
-      </div>
-      {items.map(item => (
-        <ViewableWallet key={item.id} item={item} />
-      ))}
+      <Legend
+        title="Viewing"
+        className="my-12"
+        rightElement={
+          <button
+            type="button"
+            onClick={toggleListVisibility}
+            className={cn(
+              !isListVisible && 'active',
+              'flex items-center btn-sm border rounded-full py-0.5 px-3 text-xs hover:bg-light hover:bg-opacity-10 transition',
+            )}
+          >
+            Most Active{' '}
+            <IconExpand
+              className={cn(
+                !isListVisible && 'transform rotate-180',
+                'w-5 transition',
+              )}
+            />
+          </button>
+        }
+      />
+      {isListVisible && (
+        <>
+          <div className="px-4 my-4">
+            <div className="flex flex-row space-x-4 justify-start items-center font-medium text-xs">
+              <div className="flex-col xl:w-16 w-12 flex-none" />
+              <div className="w-full lg:w-48 lg:flex-shrink-0">
+                Account Name
+              </div>
+              <div className="hidden lg:block lg:flex-grow">
+                Account Address
+              </div>
+            </div>
+          </div>
+          {items.map(item => (
+            <ViewableWallet key={item.id} item={item} />
+          ))}
+        </>
+      )}
     </>
   );
 }

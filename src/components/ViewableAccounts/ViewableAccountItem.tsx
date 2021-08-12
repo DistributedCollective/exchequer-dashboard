@@ -4,6 +4,7 @@ import { LinkToExplorer } from '../LinkToExplorer';
 import type { ViewableAccount } from './types';
 import { AssetLogo } from '../AssetLogo';
 import { Toggler } from './Toggler';
+import { ReactComponent as IconDelete } from '../../assets/icon-delete.svg';
 
 interface Props {
   item: ViewableAccount;
@@ -17,11 +18,11 @@ export function ViewableWallet({ item }: Props) {
 
   return (
     <div
-      className="py-2 px-4 bg-light bg-opacity-5 rounded-lg mb-8 w-full"
+      className="py-2 px-4 bg-light bg-opacity-5 rounded-lg mb-5 w-full text-sm"
       key={item.id}
     >
       <div className="flex flex-row justify-start items-center space-x-4">
-        <div className="lg:w-24 flex-shrink-0">
+        <div className="flex-col xl:w-16 w-12 flex-none">
           <Identicon value={item.address} />
         </div>
         <div className="w-full lg:w-48 lg:flex-shrink-0 truncate">
@@ -35,7 +36,16 @@ export function ViewableWallet({ item }: Props) {
             <span className="text-light text-opacity-50">Pending</span>
           )}
           {['confirmed', 'pending_for_removal'].includes(item.status) && (
-            <Toggler isOpen={expanded} onClick={handleToggle} />
+            <div className="btn-toggler__wrapper">
+              <Toggler isOpen={expanded} onClick={handleToggle} />
+              <button
+                className="rounded p-0 hover:bg-light hover:bg-opacity-10"
+                type="button"
+              >
+                <IconDelete className="w-5 h-5" />
+                <span className="sr-only">Delete</span>
+              </button>
+            </div>
           )}
         </div>
       </div>

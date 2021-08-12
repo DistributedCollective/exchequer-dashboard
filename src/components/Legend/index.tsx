@@ -15,8 +15,7 @@ export function Legend(props: Props) {
         props.className,
       )}
     >
-      <div className="h-0.5 bg-light w-16 rounded-full" />
-      <div className="px-4 whitespace-nowrap">{props.title}</div>
+      <div className="pr-2 whitespace-nowrap">{props.title}</div>
       <div className="h-0.5 bg-light w-full rounded-full" />
       {props.rightElement && (
         <div className="px-4 whitespace-nowrap">{props.rightElement}</div>
