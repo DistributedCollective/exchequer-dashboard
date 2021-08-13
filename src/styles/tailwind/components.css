@@ -33,25 +33,32 @@
         @apply transition duration-300;
         @apply bg-light bg-opacity-10;
     }
-    .btn-toggler__wrapper button + button {
+
+    .btn-toggler__wrapper button+button {
         @apply ml-2;
     }
+
     .btn-toggler {
         @apply rounded bg-opacity-10 p-0 transition;
     }
+
     .btn-toggler:hover {
         @apply bg-opacity-10 bg-light;
     }
+
     .btn-toggler__open {
         @apply bg-light text-dark transform rotate-180;
     }
+
     .btn-toggler__open:hover {
         @apply bg-opacity-10 text-light;
     }
+
     .btn-delete {
         @apply h-5 rounded w-5 bg-opacity-10 bg-center bg-no-repeat p-2;
         background-image: url("../../assets/icon-delete.svg");
     }
+
     .btn-delete:hover {
         @apply bg-light bg-opacity-10;
     }
@@ -76,6 +83,7 @@
     .dialog--container__mini .dialog {
         max-width: 400px;
     }
+
     .dialog--container__confirmation .dialog {
         max-width: 470px;
         padding: 1.5rem;
@@ -89,7 +97,13 @@
     .form-group label {
         @apply block text-sm mb-2;
     }
-    svg, use {
+
+    svg,
+    use {
         fill: currentColor;
+    }
+
+    svg:focus {
+        outline: none;
     }
 }

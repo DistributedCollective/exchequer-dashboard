@@ -8,7 +8,7 @@ import type { PendingAccount } from './types';
 import iconActions from '../../assets/icon-actions.svg';
 import { prettyTx } from '../../utils/helpers';
 import cn from 'classnames';
-// import { ReactComponent as IconUndo } from '../../assets/icon-close.svg';
+// import { ReactComponent as IconClose } from '../../assets/icon-close.svg';
 
 interface Props {
   item: PendingAccount;
@@ -94,7 +94,7 @@ export function PendingAccountItem({ item }: Props) {
                         className="rounded p-0 hover:bg-light hover:bg-opacity-10 flex text-xs pr-2 items-center"
                         type="button"
                       >
-                        <IconUndo className="w-4 h-4 mr-1" /> Cancel
+                        <IconClose className="w-4 h-4 mr-1" /> Cancel
                       </button>
                     </div>
                   )}

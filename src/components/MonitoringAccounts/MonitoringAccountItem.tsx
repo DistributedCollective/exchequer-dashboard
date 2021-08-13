@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Identicon } from '../Identicon';
 import { LinkToExplorer } from '../LinkToExplorer';
 import type { MonitoringAccount } from './types';
 import { BalanceRenderer } from './BalanceRenderer';
 import { ReactComponent as IconDelete } from '../../assets/icon-delete.svg';
+import { RemoveAccountDialog } from '../RemoveAccountDialog';
 
 interface Props {
   item: MonitoringAccount;
 }
 
 export function MonitoringAccountItem({ item }: Props) {
+  const [isClickForRemove, setIsClickForRemove] = useState(false);
+
+  // TODO - implement account removing
+  const onRemoveAccount = (id: number) => {
+    alert('Removind Account ' + id);
+  }
+  const toggleRemoveDialog = useCallback(() => {
+    setIsClickForRemove(prevState => !prevState);
+  }, []);
+
   return (
     <div
       className="py-2 px-4 bg-light bg-opacity-5 rounded-lg mb-5 w-full text-sm"
@@ -48,14 +59,23 @@ export function MonitoringAccountItem({ item }: Props) {
               {['confirmed', 'pending_for_removal'].includes(item.status) && (
                 <div className="btn-toggler__wrapper">
                   <button
-                    className="rounded p-0 hover:bg-light hover:bg-opacity-10"
+                    className="rounded p-0 hover:bg-light hover:bg-opacity-10 active:bg-opacity-100 active:text-dark"
                     type="button"
                   >
-                    <IconDelete className="w-5 h-5" />
+                    <IconDelete
+                      onClick={toggleRemoveDialog}
+                      className="w-5 h-5"
+                    />
                     <span className="sr-only">Delete</span>
                   </button>
                 </div>
               )}
+              <RemoveAccountDialog
+                item={item}
+                isOpen={isClickForRemove}
+                onClose={() => setIsClickForRemove(false)}
+                onRemove={() => onRemoveAccount(item.id)}
+              />
             </div>
           </>
         )}

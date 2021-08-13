@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Identicon } from '../Identicon';
+import { RemoveAccountDialog } from '../RemoveAccountDialog';
 import { LinkToExplorer } from '../LinkToExplorer';
 import type { ViewableAccount } from './types';
 import { AssetLogo } from '../AssetLogo';
@@ -14,6 +15,15 @@ export function ViewableWallet({ item }: Props) {
   const [expanded, setExpanded] = useState(false);
   const handleToggle = useCallback(() => {
     setExpanded(prevState => !prevState);
+  }, []);
+
+  const onRemoveAccount = (id:number) => {
+    alert('Removind Account ' + id);
+  }
+
+  const [isClickForRemove, setIsClickForRemove] = useState(false);
+  const toggleRemoveDialog = useCallback(() => {
+    setIsClickForRemove(prevState => !prevState);
   }, []);
 
   return (
@@ -36,16 +46,27 @@ export function ViewableWallet({ item }: Props) {
             <span className="text-light text-opacity-50">Pending</span>
           )}
           {['confirmed', 'pending_for_removal'].includes(item.status) && (
-            <div className="btn-toggler__wrapper">
-              <Toggler isOpen={expanded} onClick={handleToggle} />
-              <button
-                className="rounded p-0 hover:bg-light hover:bg-opacity-10"
-                type="button"
-              >
-                <IconDelete className="w-5 h-5" />
-                <span className="sr-only">Delete</span>
-              </button>
-            </div>
+            <>
+              <div className="btn-toggler__wrapper">
+                <Toggler isOpen={expanded} onClick={handleToggle} />
+                <button
+                  className="rounded p-0 hover:bg-light hover:bg-opacity-10"
+                  type="button"
+                >
+                  <IconDelete
+                    className="w-5 h-5"
+                    onClick={toggleRemoveDialog}
+                  />
+                  <span className="sr-only">Delete</span>
+                </button>
+              </div>
+              <RemoveAccountDialog
+                item={item}
+                isOpen={isClickForRemove}
+                onClose={() => setIsClickForRemove(false)}
+                onRemove={() => onRemoveAccount(item.id)}
+              />
+            </>
           )}
         </div>
       </div>
