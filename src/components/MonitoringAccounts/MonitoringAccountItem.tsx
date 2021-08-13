@@ -16,7 +16,7 @@ export function MonitoringAccountItem({ item }: Props) {
   // TODO - implement account removing
   const onRemoveAccount = (id: number) => {
     alert('Removind Account ' + id);
-  }
+  };
   const toggleRemoveDialog = useCallback(() => {
     setIsClickForRemove(prevState => !prevState);
   }, []);

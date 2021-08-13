@@ -17,9 +17,9 @@ export function ViewableWallet({ item }: Props) {
     setExpanded(prevState => !prevState);
   }, []);
 
-  const onRemoveAccount = (id:number) => {
+  const onRemoveAccount = (id: number) => {
     alert('Removind Account ' + id);
-  }
+  };
 
   const [isClickForRemove, setIsClickForRemove] = useState(false);
   const toggleRemoveDialog = useCallback(() => {
