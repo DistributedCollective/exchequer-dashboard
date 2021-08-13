@@ -1,0 +1,103 @@
+@layer components {
+  .message {
+    @apply rounded text-center bg-dark p-1.5 text-sm text-white border border-light border-opacity-50;
+  }
+  .tooltip {
+    @apply relative;
+  }
+  .trigger {
+    @apply inline-block;
+  }
+  .bottom {
+    @apply top-full left-2/4 pt-2;
+    transform: translateX(-50%);
+  }
+  .right {
+    @apply top-2/4 left-full pl-2;
+    transform: translateY(-50%);
+  }
+  .left {
+    @apply top-2/4 right-full pr-2;
+    transform: translateY(-50%);
+  }
+  .top {
+    @apply left-2/4 bottom-full pb-2;
+    transform: translateX(-50%);
+  }
+  .bubble:after,
+  .bubble:before {
+    @apply absolute;
+    content: '';
+  }
+  .bubble {
+    @apply absolute z-10;
+    min-width: 120px;
+  }
+}
+
+.top:after {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 9px solid #222222;
+  bottom: 1px;
+  left: 50%;
+}
+
+.top:before {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 9px solid rgba(233, 234, 233, 0.5);
+  bottom: 0;
+  left: 50%;
+}
+
+.bottom:after {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid #222222;
+  top: 1px;
+  left: 50%;
+}
+
+.bottom:before {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid rgba(233, 234, 233, 0.5);
+  top: 0;
+  left: 50%;
+}
+
+.left:after {
+  border-left: 9px solid #222222;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  top: 50%;
+  right: 1px;
+  transform: translateY(-50%);
+}
+
+.left:before {
+  border-left: 9px solid rgba(233, 234, 233, 0.5);
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.right:after {
+  border-right: 9px solid #222222;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  top: 50%;
+  left: 1px;
+  transform: translateY(-50%);
+}
+.right:before {
+  border-right: 9px solid rgba(233, 234, 233, 0.5);
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}

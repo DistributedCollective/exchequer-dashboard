@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Button } from '../Button';
 import { Dialog } from '../Dialog';
+import { Tooltip } from '../Tooltip';
 import { Identicon } from '../Identicon';
 import { LinkToExplorer } from '../LinkToExplorer';
 import type { PendingAccount } from './types';
@@ -36,10 +37,12 @@ export function PendingAccountItem({ item }: Props) {
         <div className="flex-col flex-1 truncate">{item.name}</div>
         <div className="hidden lg:block flex-col flex-1">Ethereum</div>
         <div className="hidden lg:block flex-col flex-1">
-          <LinkToExplorer
-            value={prettyTx(item.address)}
-            chainId={item.chainId}
-          />
+          <Tooltip message={item.address} position={'right'}>
+            <LinkToExplorer
+              value={prettyTx(item.address)}
+              chainId={item.chainId}
+            />
+          </Tooltip>
         </div>
         <div className="hidden lg:block flex-col flex-1 truncate">Viewing</div>
         <div className="hidden lg:block flex-col flex-1 truncate">-</div>
