@@ -37,7 +37,7 @@ export function PendingAccountItem({ item }: Props) {
         <div className="flex-col flex-1 truncate">{item.name}</div>
         <div className="hidden lg:block flex-col flex-1">Ethereum</div>
         <div className="hidden lg:block flex-col flex-1">
-          <Tooltip message={item.address} position={'right'}>
+          <Tooltip message={item.address} position={'top'}>
             <LinkToExplorer
               value={prettyTx(item.address)}
               chainId={item.chainId}
