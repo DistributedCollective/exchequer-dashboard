@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ViewableWallet } from './ViewableAccountItem';
+import { ViewableAccountItem } from './ViewableAccountItem';
 import type { ViewableAccount } from './types';
 import { Legend } from '../Legend';
 import cn from 'classnames';
@@ -159,7 +159,7 @@ export function ViewableAccountsList() {
             </div>
           </div>
           {items.map(item => (
-            <ViewableWallet key={item.id} item={item} />
+            <ViewableAccountItem key={item.id} item={item} />
           ))}
         </>
       )}

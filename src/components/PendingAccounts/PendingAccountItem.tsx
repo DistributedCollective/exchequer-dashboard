@@ -10,11 +10,11 @@ import { prettyTx } from '../../utils/helpers';
 import cn from 'classnames';
 // import { ReactComponent as IconClose } from '../../assets/icon-close.svg';
 
-interface Props {
+interface PendingAccountItemProps {
   item: PendingAccount;
 }
 
-export function PendingAccountItem({ item }: Props) {
+export function PendingAccountItem({ item }: PendingAccountItemProps) {
   const [isActionVisible, setIsActionVisible] = useState<boolean>(false);
   const toggleActions = () => {
     setIsActionVisible(!isActionVisible);

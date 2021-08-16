@@ -5,12 +5,14 @@ import type { MonitoringAccount } from './types';
 import { BalanceRenderer } from './BalanceRenderer';
 import { ReactComponent as IconDelete } from '../../assets/icon-delete.svg';
 import { RemoveAccountDialog } from '../RemoveAccountDialog';
+import { AssetSymbolRenderer } from '../AssetSymbolRenderer/index';
+import { AssetsDictionary } from '../../utils/dictionaries/assets-dictionary';
 
-interface Props {
+interface MonitoringAccountItemProps {
   item: MonitoringAccount;
 }
 
-export function MonitoringAccountItem({ item }: Props) {
+export function MonitoringAccountItem({ item }: MonitoringAccountItemProps) {
   const [isClickForRemove, setIsClickForRemove] = useState(false);
 
   // TODO - implement account removing
@@ -35,7 +37,14 @@ export function MonitoringAccountItem({ item }: Props) {
         <div className="flex-col flex-3 hidden lg:block flex-initial xl:w-96 sm:w-64 truncate">
           <LinkToExplorer value={item.address} chainId={item.chainId} />
         </div>
-        <div className="hidden lg:block flex-col flex-1">{item.asset}</div>
+        <div className="hidden lg:flex items-center flex-row flex-1">
+          <img
+            className="w-6 h-full mr-1"
+            src={AssetsDictionary.get(item.asset).logoSvg}
+            alt={AssetsDictionary.get(item.asset).name}
+          />
+          <AssetSymbolRenderer asset={item.asset} />
+        </div>
         {item.status === 'pending_for_approval' ? (
           <>
             <div className="hidden lg:block flex-col flex-1"></div>

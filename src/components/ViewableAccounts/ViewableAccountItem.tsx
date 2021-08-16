@@ -7,11 +7,11 @@ import { AssetLogo } from '../AssetLogo';
 import { Toggler } from './Toggler';
 import { ReactComponent as IconDelete } from '../../assets/icon-delete.svg';
 
-interface Props {
+interface ViewableAccountItemProps {
   item: ViewableAccount;
 }
 
-export function ViewableWallet({ item }: Props) {
+export function ViewableAccountItem({ item }: ViewableAccountItemProps) {
   const [expanded, setExpanded] = useState(false);
   const handleToggle = useCallback(() => {
     setExpanded(prevState => !prevState);

@@ -4,6 +4,7 @@ import { MonitoringAccountItem } from './MonitoringAccountItem';
 import type { MonitoringAccount } from './types';
 import { ReactComponent as IconExpand } from '../../assets/icon-expand.svg';
 import cn from 'classnames';
+import { Asset } from '../../utils/types';
 
 const items: MonitoringAccount[] = [
   {
@@ -12,7 +13,7 @@ const items: MonitoringAccount[] = [
     status: 'pending_for_approval',
     address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e030',
     decimals: 18,
-    asset: 'BTC',
+    asset: Asset.XUSD,
     chainId: 1,
     balance: '0',
     threshold: '0',
@@ -23,7 +24,7 @@ const items: MonitoringAccount[] = [
     status: 'confirmed',
     address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e031',
     decimals: 18,
-    asset: 'rBTC',
+    asset: Asset.RBTC,
     chainId: 1,
     balance: '1000',
     threshold: '0',
@@ -34,7 +35,7 @@ const items: MonitoringAccount[] = [
     status: 'confirmed',
     address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e032',
     decimals: 18,
-    asset: 'ETHS',
+    asset: Asset.ETH,
     chainId: 1,
     balance: '0',
     threshold: '1000',
@@ -45,7 +46,7 @@ const items: MonitoringAccount[] = [
     status: 'confirmed',
     address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e033',
     decimals: 18,
-    asset: 'USDT',
+    asset: Asset.USDT,
     chainId: 1,
     balance: '500',
     threshold: '1000',
@@ -56,7 +57,7 @@ const items: MonitoringAccount[] = [
     status: 'confirmed',
     address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e034',
     decimals: 18,
-    asset: 'BTC',
+    asset: Asset.RBTC,
     chainId: 1,
     balance: '1000',
     threshold: '500',
@@ -67,7 +68,7 @@ const items: MonitoringAccount[] = [
     status: 'confirmed',
     address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e035',
     decimals: 18,
-    asset: 'BTC',
+    asset: Asset.MOC,
     chainId: 1,
     balance: '1100',
     threshold: '1000',

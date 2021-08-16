@@ -1,7 +1,8 @@
-export type UserRole = 'viewer' | 'reader' | 'signer';
+import { AbiItem } from 'web3-utils';
+import { contracts } from '../utils/blockchain/contracts';
 
+export type UserRole = 'viewer' | 'reader' | 'signer';
 export enum Asset {
-  CSOV = 'CSOV',
   RBTC = 'RBTC',
   ETH = 'ETH',
   DOC = 'DOC',
@@ -12,4 +13,13 @@ export enum Asset {
   MOC = 'MOC',
   BNB = 'BNBS',
   FISH = 'FISH',
+  BTC = 'BTC',
 }
+
+export type ContractName = keyof typeof contracts;
+export type ContractData = { [contractName: string]: ContractItemData };
+export type ContractItemData = {
+  address: string;
+  abi: AbiItem | AbiItem[] | any;
+  blockNumber: number;
+};

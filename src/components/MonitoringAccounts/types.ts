@@ -1,3 +1,5 @@
+import { Asset } from '../../utils/types'
+
 export type AccountType =
   | 'confirmed'
   | 'pending_for_approval'
@@ -9,7 +11,7 @@ export type MonitoringAccount = {
   address: string;
   chainId: number;
   status: AccountType;
-  asset: string;
+  asset: Asset;
   decimals: number;
   balance: string;
   threshold: string;
