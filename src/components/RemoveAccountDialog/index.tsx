@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button } from '../Button';
 import { Dialog } from '../Dialog';
+import { ViewableAccount } from '../ViewableAccounts/types';
+import { MonitoringAccount } from '../MonitoringAccounts/types';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   onRemove: () => void;
-  item: any;
+  item: ViewableAccount | MonitoringAccount;
 }
 
 export function RemoveAccountDialog(props: Props) {
@@ -31,10 +33,11 @@ export function RemoveAccountDialog(props: Props) {
         </p>
         <div>
           <p className="text-xs mb-2">
-            <span className="opacity-50">Account Name:</span> {props.item.name}
+            <span className="opacity-50">Account Name:</span>{' '}
+            {props.item.walletName}
           </p>
           <p className="text-xs mb-2">
-            <span className="opacity-50">Network:</span> RSK
+            <span className="opacity-50">Network:</span> {props.item.chainId}
           </p>
           <p className="text-xs">
             <span className="opacity-50">Account Address:</span>{' '}

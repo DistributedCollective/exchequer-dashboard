@@ -6,42 +6,87 @@ import { Stepper } from '../../components/Stepper';
 import { Input } from '../../components/Input';
 import { Legend } from '../../components/Legend';
 import { FormGroup } from '../../components/FormGroup';
+import { httpClient } from '../../utils/http-client';
+import { useAuthContext } from '../AuthContainer';
+import { bignumber } from 'mathjs';
 
-type AccountType = 'viewing' | 'monitoring';
+type AccountType = 'view' | 'monitor';
 
 type FormState = {
-  name: string;
+  walletName: string;
   address: string;
   chainId: number;
   exchange: string;
   exchangeKey: string;
-  asset: string;
+  assetName: string;
+  assetContractAddress: string;
+  assetDecimals: number;
   threshold: string;
 };
 
 export function NewProposalContainer() {
+  const { address, onStateRefreshed } = useAuthContext();
   const [isOpen, setIsOpen] = useState(false);
-  const [type, setType] = useState<AccountType>('viewing');
+  const [type, setType] = useState<AccountType>('view');
   const [step, setStep] = useState<number>(1);
+  const [errors, setErrors] = useState<string[]>([]);
   const [form, setForm] = useState<FormState>({
-    name: '',
+    walletName: '',
     address: '',
     chainId: 30,
     exchange: '',
     exchangeKey: '',
-    asset: '',
+    assetName: '',
+    assetContractAddress: '',
+    assetDecimals: 18,
     threshold: '',
   });
 
-  const stepCount = useMemo(() => (type === 'monitoring' ? 3 : 2), [type]);
+  const stepCount = useMemo(() => (type === 'monitor' ? 3 : 2), [type]);
 
   const handleSubmit = useCallback(() => {
-    // todo post data to the endpoint.
-  }, []);
+    setErrors([]);
+
+    const value: Record<string, any> = {
+      walletName: form.walletName,
+      address: form.address,
+      chainId: form.chainId,
+      adminAddress: address,
+    };
+
+    if (type === 'view') {
+      value['isLpTokensOwner'] = true;
+    }
+
+    if (type === 'monitor') {
+      value['assetName'] = form.assetName;
+      value['assetDecimals'] = form.assetDecimals;
+      value['assetContractAddress'] =
+        form.assetContractAddress ||
+        '0x0000000000000000000000000000000000000000';
+      value['threshold'] = bignumber(form.threshold)
+        .mul(10 ** form.assetDecimals)
+        .toString();
+    }
+
+    httpClient
+      .post(`wallet/${type}`, value)
+      .then(() => {
+        onStateRefreshed(new Date());
+        setIsOpen(false);
+      })
+      .catch(error => {
+        if (error?.error?.errors) {
+          setErrors(error?.error?.errors || [error.message]);
+        } else {
+          setErrors([error.message]);
+        }
+      });
+  }, [type, form, address, onStateRefreshed]);
 
   const handleTypeChange = useCallback(
     (newType: AccountType) => {
-      if (step === 3 && newType === 'viewing') {
+      if (step === 3 && newType === 'view') {
         setStep(2);
       }
       setType(newType);
@@ -79,11 +124,11 @@ export function NewProposalContainer() {
   const isFormValid = useMemo(() => {
     return (
       [
-        form.name.length > 3, //
+        form.walletName.length > 3, //
         form.address.length === 42 ||
           (form.exchange.length > 0 && form.exchangeKey.length > 0), // wallet address or exchange info must be set
-        ...(type === 'monitoring'
-          ? [form.asset.length > 0, form.threshold.length > 0]
+        ...(type === 'monitor'
+          ? [form.assetName.length > 0, form.threshold.length > 0]
           : []),
       ].filter(item => !item).length === 0
     );
@@ -98,19 +143,19 @@ export function NewProposalContainer() {
         <div className="flex flex-row justify-between space-x-4 items-center mt-16 mb-10">
           <Button
             text="Viewing"
-            onClick={() => handleTypeChange('viewing')}
+            onClick={() => handleTypeChange('view')}
             className={cn(
               'w-full border border-light text-lg rounded-full bg-light bg-opacity-25 transition duration-300',
-              type !== 'viewing' && 'opacity-25',
+              type !== 'view' && 'opacity-25',
             )}
           />
           <Button
             text="Monitoring"
             className={cn(
               'w-full border border-light text-lg rounded-full bg-light bg-opacity-25 transition duration-300',
-              type !== 'monitoring' && 'opacity-25',
+              type !== 'monitor' && 'opacity-25',
             )}
-            onClick={() => handleTypeChange('monitoring')}
+            onClick={() => handleTypeChange('monitor')}
           />
         </div>
 
@@ -118,7 +163,10 @@ export function NewProposalContainer() {
           <>
             <h2 className="text-lg font-semibold mb-4">Account Info</h2>
             <FormGroup label="Account Name">
-              <Input value={form.name} onChange={updateForm('name')} />
+              <Input
+                value={form.walletName}
+                onChange={updateForm('walletName')}
+              />
             </FormGroup>
           </>
         )}
@@ -131,24 +179,39 @@ export function NewProposalContainer() {
             <FormGroup label="Wallet Address">
               <Input value={form.address} onChange={updateForm('address')} />
             </FormGroup>
-            <Legend title="Exchange" className="mt-10 mb-4" />
-            <FormGroup label="Exchange API Url">
-              <Input value={form.exchange} onChange={updateForm('exchange')} />
-            </FormGroup>
-            <FormGroup label="Exchange API Key">
-              <Input
-                value={form.exchangeKey}
-                onChange={updateForm('exchangeKey')}
-              />
-            </FormGroup>
+            {/*<Legend title="Exchange" className="mt-10 mb-4" />*/}
+            {/*<FormGroup label="Exchange API Url">*/}
+            {/*  <Input value={form.exchange} onChange={updateForm('exchange')} />*/}
+            {/*</FormGroup>*/}
+            {/*<FormGroup label="Exchange API Key">*/}
+            {/*  <Input*/}
+            {/*    value={form.exchangeKey}*/}
+            {/*    onChange={updateForm('exchangeKey')}*/}
+            {/*  />*/}
+            {/*</FormGroup>*/}
           </>
         )}
 
-        {step === 3 && type === 'monitoring' && (
+        {step === 3 && type === 'monitor' && (
           <>
             <h2 className="text-lg font-semibold mb-4">Asset Info</h2>
-            <FormGroup label="Asset Name">
-              <Input value={form.asset} onChange={updateForm('asset')} />
+            <FormGroup label="Asset Symbol (SOV)">
+              <Input
+                value={form.assetName}
+                onChange={updateForm('assetName')}
+              />
+            </FormGroup>
+            <FormGroup label="Asset Contract Address (if any)">
+              <Input
+                value={form.assetContractAddress}
+                onChange={updateForm('assetContractAddress')}
+              />
+            </FormGroup>
+            <FormGroup label="Asset Decimals">
+              <Input
+                value={form.assetDecimals}
+                onChange={updateForm('assetDecimals')}
+              />
             </FormGroup>
             <FormGroup label="Asset Balance Threshold">
               <Input
@@ -157,6 +220,14 @@ export function NewProposalContainer() {
               />
             </FormGroup>
           </>
+        )}
+
+        {errors && (
+          <ol className="text-red">
+            {errors.map(error => (
+              <li key={error}>{error}</li>
+            ))}
+          </ol>
         )}
 
         <div className="flex flex-row justify-between items-center space-x-4 mt-16">

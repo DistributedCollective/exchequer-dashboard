@@ -6,25 +6,40 @@ import type { ViewableAccount } from './types';
 import { AssetLogo } from '../AssetLogo';
 import { Toggler } from './Toggler';
 import { ReactComponent as IconDelete } from '../../assets/icon-delete.svg';
+import { tokenBalanceFormatted } from '../../utils/helpers';
+import { httpClient } from '../../utils/http-client';
+import { useAuthContext } from '../../containers/AuthContainer';
 
 interface ViewableAccountItemProps {
   item: ViewableAccount;
 }
 
 export function ViewableAccountItem({ item }: ViewableAccountItemProps) {
+  const { role, onStateRefreshed } = useAuthContext();
   const [expanded, setExpanded] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const handleToggle = useCallback(() => {
     setExpanded(prevState => !prevState);
   }, []);
 
-  const onRemoveAccount = (id: number) => {
-    alert('Removind Account ' + id);
-  };
+  const onRemoveAccount = useCallback(() => {
+    httpClient
+      .delete(`wallet/view/${item.id}`)
+      .then(() => {
+        setDeleted(true);
+        onStateRefreshed(new Date());
+      })
+      .catch(console.error);
+  }, [item, onStateRefreshed]);
 
   const [isClickForRemove, setIsClickForRemove] = useState(false);
   const toggleRemoveDialog = useCallback(() => {
     setIsClickForRemove(prevState => !prevState);
   }, []);
+
+  if (deleted) {
+    return <React.Fragment key={item.id} />;
+  }
 
   return (
     <div
@@ -36,35 +51,37 @@ export function ViewableAccountItem({ item }: ViewableAccountItemProps) {
           <Identicon value={item.address} />
         </div>
         <div className="w-full lg:w-48 lg:flex-shrink-0 truncate">
-          {item.name}
+          {item.walletName}
         </div>
         <div className="hidden lg:block lg:flex-grow truncate">
           <LinkToExplorer value={item.address} chainId={item.chainId} />
         </div>
         <div className="lg:w-24 lg:flex-shrink-0 flex justify-end items-center">
-          {item.status === 'pending_for_approval' && (
-            <span className="text-light text-opacity-50">Pending</span>
-          )}
-          {['confirmed', 'pending_for_removal'].includes(item.status) && (
+          {/*{item.status === 'pending_for_approval' && (*/}
+          {/*  <span className="text-light text-opacity-50">Pending</span>*/}
+          {/*)}*/}
+          {['Approved', 'pending_for_removal'].includes(item.status) && (
             <>
               <div className="btn-toggler__wrapper">
                 <Toggler isOpen={expanded} onClick={handleToggle} />
-                <button
-                  className="rounded p-0 hover:bg-light hover:bg-opacity-10"
-                  type="button"
-                >
-                  <IconDelete
-                    className="w-5 h-5"
-                    onClick={toggleRemoveDialog}
-                  />
-                  <span className="sr-only">Delete</span>
-                </button>
+                {role === 'signer' && (
+                  <button
+                    className="rounded p-0 hover:bg-light hover:bg-opacity-10"
+                    type="button"
+                  >
+                    <IconDelete
+                      className="w-5 h-5"
+                      onClick={toggleRemoveDialog}
+                    />
+                    <span className="sr-only">Delete</span>
+                  </button>
+                )}
               </div>
               <RemoveAccountDialog
                 item={item}
                 isOpen={isClickForRemove}
                 onClose={() => setIsClickForRemove(false)}
-                onRemove={() => onRemoveAccount(item.id)}
+                onRemove={onRemoveAccount}
               />
             </>
           )}
@@ -72,19 +89,19 @@ export function ViewableAccountItem({ item }: ViewableAccountItemProps) {
       </div>
       {expanded && (
         <div className="mt-8 pl-2 lg:pl-24 max-h-56 overflow-y-auto">
-          {item.tokens.length > 0 ? (
-            item.tokens.map((token, index) => (
+          {item.balances && item.balances.length > 0 ? (
+            item.balances.map((token, index) => (
               <div
                 key={index}
                 className="w-full flex flex-row justify-start items-center space-x-4 mb-4"
               >
                 <div className="w-2/5 lg:w-36 flex-shrink-0 flex flex-row justify-start items-center space-x-4">
-                  <AssetLogo
-                    address={'0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'}
-                  />{' '}
-                  <span>{token.name}</span>
+                  <AssetLogo address={token.address} />{' '}
+                  <span>{token.symbol}</span>
                 </div>
-                <div className="w-3/5 lg:w-48 truncate">{token.balance}</div>
+                <div className="w-3/5 lg:w-48 truncate">
+                  {tokenBalanceFormatted(token.balance, 6, token.decimal)}
+                </div>
                 <div className="hidden lg:block truncate">
                   <LinkToExplorer
                     value={token.address}
