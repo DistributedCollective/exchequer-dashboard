@@ -35,6 +35,18 @@
         @apply placeholder-opacity-50 outline-none ring;
     }
 
+    select {
+        background: transparent;
+        @apply px-6 py-3 w-full;
+        @apply border border-light rounded-xl;
+        @apply text-light;
+        @apply placeholder-light;
+    }
+
+    select:focus {
+        @apply placeholder-opacity-50 outline-none ring;
+    }
+
     button {
         @apply text-light whitespace-nowrap	px-4 py-2;
     }

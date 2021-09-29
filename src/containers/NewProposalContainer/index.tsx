@@ -9,6 +9,7 @@ import { FormGroup } from '../../components/FormGroup';
 import { httpClient } from '../../utils/http-client';
 import { useAuthContext } from '../AuthContainer';
 import { bignumber } from 'mathjs';
+import { Select } from '../../components/Select';
 
 type AccountType = 'view' | 'monitor';
 
@@ -16,8 +17,7 @@ type FormState = {
   walletName: string;
   address: string;
   chainId: number;
-  exchange: string;
-  exchangeKey: string;
+  exchangeName: string;
   assetName: string;
   assetContractAddress: string;
   assetDecimals: number;
@@ -34,8 +34,7 @@ export function NewProposalContainer() {
     walletName: '',
     address: '',
     chainId: 30,
-    exchange: '',
-    exchangeKey: '',
+    exchangeName: '',
     assetName: '',
     assetContractAddress: '',
     assetDecimals: 18,
@@ -52,6 +51,7 @@ export function NewProposalContainer() {
       address: form.address,
       chainId: form.chainId,
       adminAddress: address,
+      exchangeName: form.exchangeName,
     };
 
     if (type === 'view') {
@@ -74,6 +74,17 @@ export function NewProposalContainer() {
       .then(() => {
         onStateRefreshed(new Date());
         setIsOpen(false);
+        setForm({
+          walletName: '',
+          address: '',
+          chainId: 30,
+          exchangeName: '',
+          assetName: '',
+          assetContractAddress: '',
+          assetDecimals: 18,
+          threshold: '',
+        });
+        setStep(1);
       })
       .catch(error => {
         if (error?.error?.errors) {
@@ -121,12 +132,22 @@ export function NewProposalContainer() {
     [],
   );
 
+  const updateSelect = useCallback(
+    (key: keyof FormState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const value = event.currentTarget.value;
+      setForm(prevState => ({
+        ...prevState,
+        [key]: value,
+      }));
+    },
+    [],
+  );
+
   const isFormValid = useMemo(() => {
     return (
       [
         form.walletName.length > 3, //
-        form.address.length === 42 ||
-          (form.exchange.length > 0 && form.exchangeKey.length > 0), // wallet address or exchange info must be set
+        form.address.length === 42 || form.exchangeName.length > 0, // wallet address or exchange info must be set
         ...(type === 'monitor'
           ? [form.assetName.length > 0, form.threshold.length > 0]
           : []),
@@ -179,16 +200,28 @@ export function NewProposalContainer() {
             <FormGroup label="Wallet Address">
               <Input value={form.address} onChange={updateForm('address')} />
             </FormGroup>
-            {/*<Legend title="Exchange" className="mt-10 mb-4" />*/}
-            {/*<FormGroup label="Exchange API Url">*/}
-            {/*  <Input value={form.exchange} onChange={updateForm('exchange')} />*/}
-            {/*</FormGroup>*/}
-            {/*<FormGroup label="Exchange API Key">*/}
-            {/*  <Input*/}
-            {/*    value={form.exchangeKey}*/}
-            {/*    onChange={updateForm('exchangeKey')}*/}
-            {/*  />*/}
-            {/*</FormGroup>*/}
+            <FormGroup label="Network">
+              <Select value={form.chainId} onChange={updateSelect('chainId')}>
+                <option value={30}>RSK</option>
+                <option value={1}>Ethereum</option>
+                <optgroup label="Testnets">
+                  <option value={31}>RSK testnet</option>
+                </optgroup>
+              </Select>
+            </FormGroup>
+            <Legend title="Exchange" className="mt-10 mb-4" />
+            <FormGroup label="Exchange Name">
+              <Select
+                value={form.exchangeName}
+                onChange={updateSelect('exchangeName')}
+              >
+                <option value="">- N/A</option>
+                <option value="bitfinex">Bitfinex</option>
+                <option value="kucoin">Kukoin</option>
+                <option value="gate">Gate</option>
+                <option value="ascendex">Ascendex</option>
+              </Select>
+            </FormGroup>
           </>
         )}
 

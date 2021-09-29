@@ -1,5 +1,9 @@
 module.exports = {
-  purge: ['./src/components/**/*.{ts,tsx}', './src/pages/**/*.{ts,tsx}'],
+  purge: [
+    './src/components/**/*.{ts,tsx}',
+    './src/containers/**/*.{ts,tsx}',
+    './src/pages/**/*.{ts,tsx}',
+  ],
   future: {
     purgeLayersByDefault: true,
   },
