@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
+import { tokenBalanceFormatted } from '../../utils/helpers';
 
 interface Props {
   balance: string;
   threshold: string;
+  decimals: number;
 }
 
 export function BalanceRenderer(props: Props) {
@@ -32,7 +34,7 @@ export function BalanceRenderer(props: Props) {
 
   return (
     <span className={className} title={`Difference is ${diff.toFixed(2)} %.`}>
-      {props.balance}
+      {tokenBalanceFormatted(props.balance, 4, props.decimals)}
     </span>
   );
 }

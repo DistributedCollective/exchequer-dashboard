@@ -7,17 +7,20 @@ type AuthContextState = {
   address: string | null;
   role: UserRole;
   wallet: WalletService;
+  stateRefreshed: number;
 };
 
 type AuthContextMethods = {
   updateWallet: (wallet: WalletService) => void;
   updateRole: (role: UserRole) => void;
+  onStateRefreshed: (date: Date) => void;
 };
 
 const defaultState: AuthContextState = {
   address: null,
   role: 'reader',
   wallet: null as any,
+  stateRefreshed: Date.now(),
 };
 
 export const AuthContext = createContext<AuthContextState & AuthContextMethods>(
@@ -41,7 +44,7 @@ interface Props {
 export function AuthContainer(props: Props) {
   const [state, setState] = useState<AuthContextState>(defaultState);
 
-  const updateWallet = useCallback((wallet: WalletService) => {
+  const updateWallet = useCallback(async (wallet: WalletService) => {
     setState(prevState => ({ ...prevState, wallet, address: wallet.address }));
   }, []);
 
@@ -49,8 +52,14 @@ export function AuthContainer(props: Props) {
     setState(prevState => ({ ...prevState, role }));
   }, []);
 
+  const onStateRefreshed = useCallback((date: Date) => {
+    setState(prevState => ({ ...prevState, stateRefreshed: date.getTime() }));
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ ...state, updateWallet, updateRole }}>
+    <AuthContext.Provider
+      value={{ ...state, updateWallet, updateRole, onStateRefreshed }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

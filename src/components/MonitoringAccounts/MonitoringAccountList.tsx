@@ -4,78 +4,15 @@ import { MonitoringAccountItem } from './MonitoringAccountItem';
 import type { MonitoringAccount } from './types';
 import { ReactComponent as IconExpand } from '../../assets/icon-expand.svg';
 import cn from 'classnames';
-import { Asset } from '../../utils/types';
-
-const items: MonitoringAccount[] = [
-  {
-    id: 0,
-    name: 'Account #0',
-    status: 'pending_for_approval',
-    address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e030',
-    decimals: 18,
-    asset: Asset.XUSD,
-    chainId: 1,
-    balance: '0',
-    threshold: '0',
-  },
-  {
-    id: 1,
-    name: 'Account #1',
-    status: 'confirmed',
-    address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e031',
-    decimals: 18,
-    asset: Asset.RBTC,
-    chainId: 1,
-    balance: '1000',
-    threshold: '0',
-  },
-  {
-    id: 2,
-    name: 'Account #2',
-    status: 'confirmed',
-    address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e032',
-    decimals: 18,
-    asset: Asset.ETH,
-    chainId: 1,
-    balance: '0',
-    threshold: '1000',
-  },
-  {
-    id: 3,
-    name: 'Account #3',
-    status: 'confirmed',
-    address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e033',
-    decimals: 18,
-    asset: Asset.USDT,
-    chainId: 1,
-    balance: '500',
-    threshold: '1000',
-  },
-  {
-    id: 4,
-    name: 'Account #4',
-    status: 'confirmed',
-    address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e034',
-    decimals: 18,
-    asset: Asset.RBTC,
-    chainId: 1,
-    balance: '1000',
-    threshold: '500',
-  },
-  {
-    id: 5,
-    name: 'Account #5',
-    status: 'confirmed',
-    address: '0x1AC567836a6c97eE69D800C1fe8b0Ae551f0e035',
-    decimals: 18,
-    asset: Asset.MOC,
-    chainId: 1,
-    balance: '1100',
-    threshold: '1000',
-  },
-];
+import { useFetch } from '../../hooks/useFetch';
+import { useAuthContext } from '../../containers/AuthContainer';
 
 export function MonitoringAccountList() {
+  const { stateRefreshed } = useAuthContext();
+  const { data: items, loading } = useFetch<MonitoringAccount[]>(
+    'wallet/monitor',
+    stateRefreshed,
+  );
   const [isListVisible, setIsListVisible] = useState<boolean>(true);
   const toggleListVisibility = () => {
     setIsListVisible(!isListVisible);
@@ -94,7 +31,7 @@ export function MonitoringAccountList() {
               'flex items-center btn-sm border rounded-full py-0.5 px-3 text-xs hover:bg-light hover:bg-opacity-10 transition',
             )}
           >
-            Most Active{' '}
+            Toggle Visibility{' '}
             <IconExpand
               className={cn(
                 !isListVisible && 'transform rotate-180',
@@ -122,9 +59,16 @@ export function MonitoringAccountList() {
               <div className="flex-1 flex justify-end items-center" />
             </div>
           </div>
-          {items.map(item => (
-            <MonitoringAccountItem key={item.id} item={item} />
-          ))}
+          {loading && !items ? (
+            <div className="py-2 px-4 bg-light bg-opacity-5 rounded-lg mb-5 w-full text-sm">
+              Loading
+            </div>
+          ) : (
+            items &&
+            items.map(item => (
+              <MonitoringAccountItem key={item.id} item={item} />
+            ))
+          )}
         </>
       )}
     </>

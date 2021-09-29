@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { useAuthContext } from '../AuthContainer';
 import { Button } from '../../components/Button';
 import { prettyTx } from '../../utils/helpers';
+import { httpClient } from '../../utils/http-client';
 
 export const EngageWalletContainer = () => (
   <WalletProvider
@@ -21,9 +22,38 @@ function WalletConsumer() {
 
   useEffect(() => {
     auth.updateWallet(wallet);
+    auth.updateRole('viewer');
     // only run effect if wallet.address changed
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet.address]);
+
+  useEffect(() => {
+    if (wallet.wallet?.getAddressString()) {
+      const sign = async () => {
+        const date = new Date().toString();
+        const message = `Login to backend on ${date}`;
+        const signature = await wallet.signMessage(
+          `Login to backend on ${date}`,
+        );
+        const { token } = await httpClient.post<{ token: string }>(
+          'user/auth',
+          {
+            signedMessage: signature,
+            message: message,
+            walletAddress: wallet.address,
+          },
+        );
+        httpClient.setAccessToken(token);
+        auth.updateRole('signer');
+      };
+
+      sign().catch(() => {
+        auth.updateRole('viewer');
+        httpClient.setAccessToken(null);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wallet, wallet.address]);
 
   return (
     <>
