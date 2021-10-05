@@ -21,7 +21,13 @@ export function Identicon(props: Props) {
   }, [props.size]);
 
   return (
-    <div className={cn("rounded-full overflow-hidden", props.size === 'sm' && 'w-8 h-8', props.size === 'lg' && 'w-16 h-16')}>
+    <div
+      className={cn(
+        'rounded-full overflow-hidden',
+        props.size === 'sm' && 'w-8 h-8',
+        props.size === 'lg' && 'w-16 h-16',
+      )}
+    >
       <ReactIdenticon string={props.value} size={size} />
     </div>
   );

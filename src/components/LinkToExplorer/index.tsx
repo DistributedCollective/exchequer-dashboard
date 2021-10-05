@@ -12,10 +12,19 @@ interface Props {
 export function LinkToExplorer(props: Props) {
   const url = useMemo(() => {
     const explorer = explorers[props.chainId] || '';
-    return `${explorer}/${props.type === 'address' ? 'address' : 'tx'}/${props.value}`;
+    return `${explorer}/${props.type === 'address' ? 'address' : 'tx'}/${
+      props.value
+    }`;
   }, [props]);
   return (
-    <a href={url} className="truncate" target="_blank" rel="noreferrer noopener">{props.value}</a>
+    <a
+      href={url}
+      className="truncate hover:underline"
+      target="_blank"
+      rel="noreferrer noopener"
+    >
+      {props.value}
+    </a>
   );
 }
 

@@ -1,17 +1,23 @@
-export type AccountType = 'confirmed' | 'pending_for_approval' | 'pending_for_removal';
+export type AccountStatus = 'Approved';
 
 export type ViewableAccount = {
-  id: number;
-  name: string;
+  id: string;
   address: string;
+  walletName: string;
+  adminAddress: string;
+  createdAt: Date;
+  updatedAt: Date;
+  balances: Nullable<ViewableAccountToken[]>;
   chainId: number;
-  tokens: ViewableAccountToken[];
-  status: AccountType;
-}
+  exchangeName: Nullable<string>;
+  isLpTokensOwner: boolean;
+  status: AccountStatus;
+  votingIteration: number;
+};
 
 export type ViewableAccountToken = {
-  name: string;
+  symbol: string;
   address: string;
   balance: string;
-  decimals: number;
+  decimal: number;
 };

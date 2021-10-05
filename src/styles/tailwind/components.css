@@ -1,13 +1,13 @@
 @layer components {
     .btn-primary {
-        @apply bg-yellow border border-yellow bg-yellow-light font-semibold text-yellow;
-        @apply px-6 py-2;
+        @apply bg-yellow border border-yellow bg-opacity-25 font-semibold text-yellow;
+        @apply px-4 py-2;
         @apply rounded-3xl;
         @apply transition duration-300;
     }
 
     .btn-primary:hover {
-        @apply bg-opacity-5;
+        @apply bg-opacity-10;
     }
 
     .btn-primary:disabled {
@@ -28,15 +28,39 @@
         @apply text-yellow opacity-50 cursor-not-allowed;
     }
 
-    .btn-toggler {
-        @apply w-5 h-5 p-0 rounded;
+    .btn-toggler__wrapper {
+        @apply h-7 py-2 px-1 rounded flex justify-center items-center;
         @apply transition duration-300;
-        background: url("../../assets/expand_more.svg") center center no-repeat;
+        @apply bg-light bg-opacity-10;
+    }
+
+    .btn-toggler__wrapper button+button {
+        @apply ml-2;
+    }
+
+    .btn-toggler {
+        @apply rounded bg-opacity-10 p-0 transition;
+    }
+
+    .btn-toggler:hover {
+        @apply bg-opacity-10 bg-light;
     }
 
     .btn-toggler__open {
-        @apply bg-light;
-        background-image: url("../../assets/expand_less.svg");
+        @apply bg-light text-dark transform rotate-180;
+    }
+
+    .btn-toggler__open:hover {
+        @apply bg-opacity-10 text-light;
+    }
+
+    .btn-delete {
+        @apply h-5 rounded w-5 bg-opacity-10 bg-center bg-no-repeat p-2;
+        background-image: url("../../assets/icon-delete.svg");
+    }
+
+    .btn-delete:hover {
+        @apply bg-light bg-opacity-10;
     }
 
     .dialog-wrapper {
@@ -45,7 +69,7 @@
 
     .dialog--backdrop {
         @apply fixed inset-0;
-        @apply bg-black bg-opacity-50;
+        @apply bg-black bg-opacity-60;
     }
 
     .dialog--container {
@@ -53,6 +77,33 @@
     }
 
     .dialog {
-        @apply bg-dark my-16 px-12 py-8 rounded-lg border border-light;
+        @apply bg-dark my-16 px-12 py-8 rounded-lg border border-light border-opacity-50;
+    }
+
+    .dialog--container__mini .dialog {
+        max-width: 400px;
+    }
+
+    .dialog--container__confirmation .dialog {
+        max-width: 470px;
+        padding: 1.5rem;
+        margin-left: auto;
+    }
+
+    .form-group {
+        @apply mb-6;
+    }
+
+    .form-group label {
+        @apply block text-sm mb-2;
+    }
+
+    svg,
+    use {
+        fill: currentColor;
+    }
+
+    svg:focus {
+        outline: none;
     }
 }

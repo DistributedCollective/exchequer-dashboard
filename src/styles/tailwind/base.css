@@ -25,13 +25,25 @@
 
     input {
         background: transparent;
-        @apply px-6 py-3;
+        @apply px-6 py-3 w-full;
         @apply border border-light rounded-xl;
         @apply text-light;
         @apply placeholder-light;
     }
 
     input:focus {
+        @apply placeholder-opacity-50 outline-none ring;
+    }
+
+    select {
+        background: transparent;
+        @apply px-6 py-3 w-full;
+        @apply border border-light rounded-xl;
+        @apply text-light;
+        @apply placeholder-light;
+    }
+
+    select:focus {
         @apply placeholder-opacity-50 outline-none ring;
     }
 

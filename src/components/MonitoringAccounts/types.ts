@@ -1,13 +1,24 @@
-export type AccountType = 'confirmed' | 'pending_for_approval' | 'pending_for_removal';
+export type AccountType =
+  | 'Approved'
+  | 'pending_for_approval'
+  | 'pending_for_removal';
 
 export type MonitoringAccount = {
-  id: number;
-  name: string;
+  id: string;
   address: string;
-  chainId: number;
-  status: AccountType;
-  asset: string;
-  decimals: number;
+  adminAddress: string;
+  assetContractAddress: string;
+  assetDecimals: number;
+  assetName: string;
   balance: string;
-  threshold: string;
-}
+  balanceLastUpdated: Date;
+  chainId: number;
+  createdAt: Date;
+  exchangeName: Nullable<string>;
+  notificationLastSent: Nullable<Date>;
+  status: AccountType;
+  threshold: Nullable<string>;
+  updatedAt: Date;
+  votingIteration: number;
+  walletName: string;
+};

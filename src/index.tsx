@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import './styles/tailwind/index.css';
 import reportWebVitals from './reportWebVitals';
 import { Homepage } from './pages/Homepage';
+import { AuthContainer } from './containers/AuthContainer';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <AuthContainer>
     <Homepage />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </AuthContainer>,
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function
