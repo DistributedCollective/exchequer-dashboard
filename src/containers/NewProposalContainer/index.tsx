@@ -69,6 +69,10 @@ export function NewProposalContainer() {
         .toString();
     }
 
+    if (!value['exchangeName']) {
+      delete value['exchangeName'];
+    }
+
     httpClient
       .post(`wallet/${type}`, value)
       .then(() => {
