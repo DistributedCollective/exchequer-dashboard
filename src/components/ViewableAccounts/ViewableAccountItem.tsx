@@ -3,10 +3,13 @@ import { Identicon } from '../Identicon';
 import { RemoveAccountDialog } from '../RemoveAccountDialog';
 import { LinkToExplorer } from '../LinkToExplorer';
 import type { ViewableAccount } from './types';
-import { AssetLogo } from '../AssetLogo';
 import { Toggler } from './Toggler';
 import { ReactComponent as IconDelete } from '../../assets/icon-delete.svg';
-import { tokenBalanceFormatted } from '../../utils/helpers';
+import {
+  chainIdToNetworkName,
+  ifGenesisThen,
+  tokenBalanceFormatted,
+} from '../../utils/helpers';
 import { httpClient } from '../../utils/http-client';
 import { useAuthContext } from '../../containers/AuthContainer';
 
@@ -47,14 +50,17 @@ export function ViewableAccountItem({ item }: ViewableAccountItemProps) {
       key={item.id}
     >
       <div className="flex flex-row justify-start items-center space-x-4">
-        <div className="flex-col xl:w-16 w-12 flex-none">
-          <Identicon value={item.address} />
+        <div className="xl:w-16 w-12 flex-none flex-1">
+          <Identicon value={ifGenesisThen(item.address, item.walletName)} />
         </div>
-        <div className="w-full lg:w-48 lg:flex-shrink-0 truncate">
-          {item.walletName}
+        <div className="w-full lg:w-48 truncate flex-1">{item.walletName}</div>
+        <div className="hidden lg:block flex-1 truncate">
+          {chainIdToNetworkName(item.chainId)}
         </div>
-        <div className="hidden lg:block lg:flex-grow truncate">
-          <LinkToExplorer value={item.address} chainId={item.chainId} />
+        <div className="hidden lg:block lg:flex-grow flex-1 truncate">
+          {!item.exchangeName && (
+            <LinkToExplorer value={item.address} chainId={item.chainId} />
+          )}
         </div>
         <div className="lg:w-24 lg:flex-shrink-0 flex justify-end items-center">
           {/*{item.status === 'pending_for_approval' && (*/}
@@ -88,7 +94,7 @@ export function ViewableAccountItem({ item }: ViewableAccountItemProps) {
         </div>
       </div>
       {expanded && (
-        <div className="mt-8 pl-2 lg:pl-24 max-h-56 overflow-y-auto">
+        <div className="mt-8 pl-2 lg:pl-16 max-h-56 overflow-y-auto">
           {item.balances && item.balances.length > 0 ? (
             item.balances.map((token, index) => (
               <div
@@ -96,7 +102,6 @@ export function ViewableAccountItem({ item }: ViewableAccountItemProps) {
                 className="w-full flex flex-row justify-start items-center space-x-4 mb-4"
               >
                 <div className="w-2/5 lg:w-36 flex-shrink-0 flex flex-row justify-start items-center space-x-4">
-                  <AssetLogo address={token.address} />{' '}
                   <span>{token.symbol}</span>
                 </div>
                 <div className="w-3/5 lg:w-48 truncate">

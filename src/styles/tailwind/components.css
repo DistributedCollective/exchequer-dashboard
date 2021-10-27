@@ -65,6 +65,7 @@
 
     .dialog-wrapper {
         @apply fixed inset-0;
+        overflow: auto;
     }
 
     .dialog--backdrop {
@@ -105,5 +106,17 @@
 
     svg:focus {
         outline: none;
+    }
+
+    .checkbox-group {
+        @apply flex flex-row space-x-4 justify-start items-center cursor-pointer;
+    }
+
+    .checkbox-input {
+        @apply w-4 h-4;
+    }
+
+    .checkbox-label {
+        @apply flex-1 flex-grow;
     }
 }

@@ -10,6 +10,7 @@ import { httpClient } from '../../utils/http-client';
 import { useAuthContext } from '../AuthContainer';
 import { bignumber } from 'mathjs';
 import { Select } from '../../components/Select';
+import { Checkbox } from '../../components/Checkbox';
 
 type AccountType = 'view' | 'monitor';
 
@@ -22,6 +23,7 @@ type FormState = {
   assetContractAddress: string;
   assetDecimals: number;
   threshold: string;
+  isLpTokensOwner: boolean;
 };
 
 export function NewProposalContainer() {
@@ -39,6 +41,7 @@ export function NewProposalContainer() {
     assetContractAddress: '',
     assetDecimals: 18,
     threshold: '',
+    isLpTokensOwner: false,
   });
 
   const stepCount = useMemo(() => (type === 'monitor' ? 3 : 2), [type]);
@@ -52,11 +55,8 @@ export function NewProposalContainer() {
       chainId: form.chainId,
       adminAddress: address,
       exchangeName: form.exchangeName,
+      isLpTokensOwner: form.isLpTokensOwner,
     };
-
-    if (type === 'view') {
-      value['isLpTokensOwner'] = true;
-    }
 
     if (type === 'monitor') {
       value['assetName'] = form.assetName;
@@ -67,6 +67,10 @@ export function NewProposalContainer() {
       value['threshold'] = bignumber(form.threshold)
         .mul(10 ** form.assetDecimals)
         .toString();
+    }
+
+    if (!value['exchangeName']) {
+      delete value['exchangeName'];
     }
 
     httpClient
@@ -83,6 +87,7 @@ export function NewProposalContainer() {
           assetContractAddress: '',
           assetDecimals: 18,
           threshold: '',
+          isLpTokensOwner: false,
         });
         setStep(1);
       })
@@ -123,7 +128,10 @@ export function NewProposalContainer() {
 
   const updateForm = useCallback(
     (key: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = event.currentTarget.value;
+      const value =
+        event.currentTarget.type === 'checkbox'
+          ? event.currentTarget.checked
+          : event.currentTarget.value;
       setForm(prevState => ({
         ...prevState,
         [key]: value,
@@ -144,16 +152,30 @@ export function NewProposalContainer() {
   );
 
   const isFormValid = useMemo(() => {
-    return (
-      [
-        form.walletName.length > 3, //
-        form.address.length === 42 || form.exchangeName.length > 0, // wallet address or exchange info must be set
-        ...(type === 'monitor'
-          ? [form.assetName.length > 0, form.threshold.length > 0]
-          : []),
-      ].filter(item => !item).length === 0
-    );
-  }, [form, type]);
+    if (step === 1) {
+      return form.walletName.length > 3;
+    }
+
+    if (step === 2) {
+      return (
+        [
+          (form.address.length === 42 && form.chainId) ||
+            form.exchangeName.length > 0, // wallet address and chainId or exchange info must be set
+          !(form.address.length > 0 && form.exchangeName.length > 0), // make sure exchange name and address is not entered both
+        ].filter(item => !item).length === 0
+      );
+    }
+
+    if (step === 3 && type === 'monitor') {
+      return (
+        [form.assetName.length > 0, form.threshold.length > 0].filter(
+          item => !item,
+        ).length === 0
+      );
+    }
+
+    return true;
+  }, [form, type, step]);
 
   return (
     <>
@@ -180,6 +202,8 @@ export function NewProposalContainer() {
           />
         </div>
 
+        {step}
+
         {step === 1 && (
           <>
             <h2 className="text-lg font-semibold mb-4">Account Info</h2>
@@ -194,12 +218,17 @@ export function NewProposalContainer() {
 
         {step === 2 && (
           <>
-            <h2 className="text-lg font-semibold mb-4">Account Address</h2>
-            <p>Fill one of the following if applicable</p>
-            <Legend title="Wallet" className="mt-10 mb-4" />
-            <FormGroup label="Wallet Address">
+            <h2 className="text-lg font-semibold mb-4">Account Details</h2>
+            <p>Fill in the details below, if applicable</p>
+            <Legend title="Account" className="mt-10 mb-4" />
+            <FormGroup label="Account Address">
               <Input value={form.address} onChange={updateForm('address')} />
             </FormGroup>
+            <Checkbox
+              checked={form.isLpTokensOwner}
+              onChange={updateForm('isLpTokensOwner')}
+              label="Owns LP Tokens"
+            />
             <FormGroup label="Network">
               <Select value={form.chainId} onChange={updateSelect('chainId')}>
                 <option value={30}>RSK</option>
@@ -217,7 +246,7 @@ export function NewProposalContainer() {
               >
                 <option value="">- N/A</option>
                 <option value="bitfinex">Bitfinex</option>
-                <option value="kucoin">Kukoin</option>
+                <option value="kucoin">Kucoin</option>
                 <option value="gate">Gate</option>
                 <option value="ascendex">Ascendex</option>
               </Select>
@@ -270,7 +299,7 @@ export function NewProposalContainer() {
           <div className="w-1/2 text-right">
             <Button
               text={step === stepCount ? 'Add' : 'Next'}
-              disabled={step === stepCount && !isFormValid}
+              disabled={!isFormValid}
               onClick={handleNextButton}
               className="w-full"
               primary
