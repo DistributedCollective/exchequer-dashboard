@@ -47,12 +47,12 @@ export function ViewableAccountsList() {
           <div className="px-4 my-4">
             <div className="flex flex-row space-x-4 justify-start items-center font-medium text-xs">
               <div className="flex-col xl:w-16 w-12 flex-none" />
-              <div className="w-full lg:w-48 lg:flex-shrink-0">
-                Account Name
-              </div>
-              <div className="hidden lg:block lg:flex-grow">
+              <div className="w-full lg:w-48 flex-1">Account Name</div>
+              <div className="flex-col flex-1 hidden lg:block">Network</div>
+              <div className="hidden lg:block lg:flex-grow flex-1">
                 Account Address
               </div>
+              <div className="lg:w-24 lg:flex-shrink-0 flex justify-end items-center" />
             </div>
           </div>
           {loading && !items ? (

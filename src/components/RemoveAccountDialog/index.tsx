@@ -3,6 +3,7 @@ import { Button } from '../Button';
 import { Dialog } from '../Dialog';
 import { ViewableAccount } from '../ViewableAccounts/types';
 import { MonitoringAccount } from '../MonitoringAccounts/types';
+import { chainIdToNetworkName, ZERO_ADDRESS } from '../../utils/helpers';
 
 interface Props {
   isOpen: boolean;
@@ -36,13 +37,18 @@ export function RemoveAccountDialog(props: Props) {
             <span className="opacity-50">Account Name:</span>{' '}
             {props.item.walletName}
           </p>
-          <p className="text-xs mb-2">
-            <span className="opacity-50">Network:</span> {props.item.chainId}
-          </p>
-          <p className="text-xs">
-            <span className="opacity-50">Account Address:</span>{' '}
-            {props.item.address}
-          </p>
+          {props.item.chainId !== 0 && (
+            <p className="text-xs mb-2">
+              <span className="opacity-50">Network:</span>{' '}
+              {chainIdToNetworkName(props.item.chainId)}
+            </p>
+          )}
+          {props.item.address !== ZERO_ADDRESS && (
+            <p className="text-xs">
+              <span className="opacity-50">Account Address:</span>{' '}
+              {props.item.address}
+            </p>
+          )}
         </div>
         <div className="flex items-center justify-end mt-10">
           <Button

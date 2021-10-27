@@ -7,7 +7,11 @@ import { ReactComponent as IconDelete } from '../../assets/icon-delete.svg';
 import { RemoveAccountDialog } from '../RemoveAccountDialog';
 import { useAuthContext } from '../../containers/AuthContainer';
 import { httpClient } from '../../utils/http-client';
-import { tokenBalanceFormatted } from '../../utils/helpers';
+import {
+  chainIdToNetworkName,
+  ifGenesisThen,
+  tokenBalanceFormatted,
+} from '../../utils/helpers';
 
 interface MonitoringAccountItemProps {
   item: MonitoringAccount;
@@ -43,21 +47,19 @@ export function MonitoringAccountItem({ item }: MonitoringAccountItemProps) {
     >
       <div className="flex flex-row justify-start items-center space-x-4">
         <div className="flex-col xl:w-16 w-12 flex-none">
-          <Identicon value={item.address} />
+          <Identicon value={ifGenesisThen(item.address, item.walletName)} />
         </div>
         <div className="flex-col flex-1 truncate">{item.walletName}</div>
-        <div className="hidden lg:block flex-col flex-1 truncate">Ethereum</div>
+        <div className="hidden lg:block flex-col flex-1 truncate">
+          {chainIdToNetworkName(item.chainId)}
+        </div>
         <div className="flex-col flex-3 hidden lg:block flex-initial xl:w-96 sm:w-64 truncate">
-          <LinkToExplorer value={item.address} chainId={item.chainId} />
+          {!item.exchangeName && (
+            <LinkToExplorer value={item.address} chainId={item.chainId} />
+          )}
         </div>
         <div className="hidden lg:flex items-center flex-row flex-1">
-          {/*<img*/}
-          {/*  className="w-6 h-full mr-1"*/}
-          {/*  src={AssetsDictionary.get(item.asset).logoSvg}*/}
-          {/*  alt={item.assetName}*/}
-          {/*/>*/}
           {item.assetName}
-          {/*<AssetSymbolRenderer asset={item.assetName} />*/}
         </div>
         {item.status === 'pending_for_approval' ? (
           <>
