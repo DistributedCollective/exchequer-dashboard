@@ -12,6 +12,7 @@ import {
 } from '../../utils/helpers';
 import { httpClient } from '../../utils/http-client';
 import { useAuthContext } from '../../containers/AuthContainer';
+import { bignumber } from 'mathjs';
 
 interface ViewableAccountItemProps {
   item: ViewableAccount;
@@ -105,7 +106,13 @@ export function ViewableAccountItem({ item }: ViewableAccountItemProps) {
                   <span>{token.symbol}</span>
                 </div>
                 <div className="w-3/5 lg:w-48 truncate">
-                  {tokenBalanceFormatted(token.balance, 6, token.decimal)}
+                  {tokenBalanceFormatted(
+                    bignumber(token.balance)
+                      .mul(Math.pow(10, item.exchangeName ? token.decimal : 0))
+                      .toString(),
+                    6,
+                    token.decimal,
+                  )}
                 </div>
                 <div className="hidden lg:block truncate">
                   <LinkToExplorer

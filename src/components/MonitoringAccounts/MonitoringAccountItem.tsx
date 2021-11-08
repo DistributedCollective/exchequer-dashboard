@@ -12,6 +12,7 @@ import {
   ifGenesisThen,
   tokenBalanceFormatted,
 } from '../../utils/helpers';
+import { bignumber } from 'mathjs';
 
 interface MonitoringAccountItemProps {
   item: MonitoringAccount;
@@ -72,7 +73,9 @@ export function MonitoringAccountItem({ item }: MonitoringAccountItemProps) {
           <>
             <div className="hidden lg:block flex-col flex-1">
               <BalanceRenderer
-                balance={item.balance}
+                balance={bignumber(item.balance || '0')
+                  .mul(Math.pow(10, item.exchangeName ? item.assetDecimals : 0))
+                  .toString()}
                 threshold={item.threshold || '0'}
                 decimals={item.assetDecimals}
               />
