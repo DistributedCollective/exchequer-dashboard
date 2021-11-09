@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Legend } from '../Legend';
 import { MonitoringAccountItem } from './MonitoringAccountItem';
 import type { MonitoringAccount } from './types';
@@ -6,10 +6,11 @@ import { ReactComponent as IconExpand } from '../../assets/icon-expand.svg';
 import cn from 'classnames';
 import { useFetch } from '../../hooks/useFetch';
 import { useAuthContext } from '../../containers/AuthContainer';
+import { sortByField } from '../../utils/helpers';
 
 export function MonitoringAccountList() {
   const { stateRefreshed } = useAuthContext();
-  const { data: items, loading } = useFetch<MonitoringAccount[]>(
+  const { data, loading } = useFetch<MonitoringAccount[]>(
     'wallet/monitor',
     stateRefreshed,
   );
@@ -17,6 +18,12 @@ export function MonitoringAccountList() {
   const toggleListVisibility = () => {
     setIsListVisible(!isListVisible);
   };
+
+  const items = useMemo(
+    () => (data || []).sort(sortByField<MonitoringAccount>('createdAt', 'asc')),
+    [data],
+  );
+
   return (
     <>
       <Legend

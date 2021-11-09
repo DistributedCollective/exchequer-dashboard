@@ -202,8 +202,6 @@ export function NewProposalContainer() {
           />
         </div>
 
-        {step}
-
         {step === 1 && (
           <>
             <h2 className="text-lg font-semibold mb-4">Account Info</h2>

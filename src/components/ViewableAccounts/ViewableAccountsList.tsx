@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ViewableAccountItem } from './ViewableAccountItem';
 import { Legend } from '../Legend';
 import cn from 'classnames';
@@ -6,10 +6,11 @@ import { ReactComponent as IconExpand } from '../../assets/icon-expand.svg';
 import { useFetch } from '../../hooks/useFetch';
 import { ViewableAccount } from './types';
 import { useAuthContext } from '../../containers/AuthContainer';
+import { sortByField } from '../../utils/helpers';
 
 export function ViewableAccountsList() {
   const { stateRefreshed } = useAuthContext();
-  const { data: items, loading } = useFetch<ViewableAccount[]>(
+  const { data, loading } = useFetch<ViewableAccount[]>(
     'wallet/view',
     stateRefreshed,
   );
@@ -18,6 +19,12 @@ export function ViewableAccountsList() {
   const toggleListVisibility = () => {
     setIsListVisible(!isListVisible);
   };
+
+  const items = useMemo(
+    () => (data || []).sort(sortByField<ViewableAccount>('createdAt', 'asc')),
+    [data],
+  );
+
   return (
     <>
       <Legend

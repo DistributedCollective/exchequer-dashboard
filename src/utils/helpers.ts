@@ -47,3 +47,19 @@ export const chainIdToNetworkName = (chainId: number) =>
 
 export const ifGenesisThen = (value: string, fallback: string) =>
   value.toLowerCase() === ZERO_ADDRESS ? fallback : value;
+
+type Sort = 'asc' | 'desc';
+
+export const sortByField =
+  <T = object>(
+    field: keyof T,
+    order: Sort = 'asc',
+    fn: (value: any) => any = value => value,
+  ) =>
+  (a: T, b: T) => {
+    if (order === 'asc') {
+      return fn(a[field]) < fn(b[field]) ? -1 : 1;
+    } else {
+      return fn(a[field]) < fn(b[field]) ? 1 : -1;
+    }
+  };
