@@ -65,7 +65,7 @@ export function NewProposalContainer() {
         form.assetContractAddress ||
         '0x0000000000000000000000000000000000000000';
       value['threshold'] = bignumber(form.threshold)
-        .mul(10 ** form.assetDecimals)
+        .mul(bignumber(10 ** form.assetDecimals))
         .toString();
     }
 
