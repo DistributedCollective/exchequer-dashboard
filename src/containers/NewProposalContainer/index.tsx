@@ -65,7 +65,7 @@ export function NewProposalContainer() {
         form.assetContractAddress ||
         '0x0000000000000000000000000000000000000000';
       value['threshold'] = bignumber(form.threshold)
-        .mul(bignumber(10 ** form.assetDecimals))
+        .mul(10 ** form.assetDecimals)
         .toString();
     }
 
@@ -92,6 +92,7 @@ export function NewProposalContainer() {
         setStep(1);
       })
       .catch(error => {
+        console.error(error);
         if (error?.error?.errors) {
           setErrors(error?.error?.errors || [error.message]);
         } else {
@@ -231,6 +232,7 @@ export function NewProposalContainer() {
               <Select value={form.chainId} onChange={updateSelect('chainId')}>
                 <option value={30}>RSK</option>
                 <option value={1}>Ethereum</option>
+                <option value={56}>Binance Smart Chain</option>
                 <optgroup label="Testnets">
                   <option value={31}>RSK testnet</option>
                 </optgroup>
