@@ -40,6 +40,7 @@ const networks: Record<number, string> = {
   1: 'Ethereum',
   30: 'RSK',
   31: 'RSK testnet',
+  56: 'Binance Smart Chain',
 };
 
 export const chainIdToNetworkName = (chainId: number) =>
