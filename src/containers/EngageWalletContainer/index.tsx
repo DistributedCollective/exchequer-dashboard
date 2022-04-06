@@ -30,7 +30,7 @@ function WalletConsumer() {
   useEffect(() => {
     if (wallet.wallet?.getAddressString()) {
       const sign = async () => {
-        const date = new Date().toString();
+        const date = new Date().toUTCString();
         const message = `Login to backend on ${date}`;
         const signature = await wallet.signMessage(
           `Login to backend on ${date}`,

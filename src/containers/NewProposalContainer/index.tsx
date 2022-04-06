@@ -64,9 +64,12 @@ export function NewProposalContainer() {
       value['assetContractAddress'] =
         form.assetContractAddress ||
         '0x0000000000000000000000000000000000000000';
-      value['threshold'] = bignumber(form.threshold)
+      const threshold = bignumber(form.threshold)
         .mul(10 ** form.assetDecimals)
         .toString();
+      value['threshold'] = Number(threshold).toLocaleString('fullwide', {
+        useGrouping: false,
+      });
     }
 
     if (!value['exchangeName']) {
