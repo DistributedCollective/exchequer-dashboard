@@ -238,6 +238,7 @@ export function NewProposalContainer() {
                 <option value={56}>Binance Smart Chain</option>
                 <optgroup label="Testnets">
                   <option value={31}>RSK testnet</option>
+                  <option value={91}>BSC testnet</option>
                 </optgroup>
               </Select>
             </FormGroup>
