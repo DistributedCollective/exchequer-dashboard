@@ -4,5 +4,5 @@ export const explorers: { [key: number]: string } = {
   30: 'https://explorer.rsk.co',
   31: 'https://explorer.testnet.rsk.co',
   56: 'https://bscxplorer.com',
-  91: 'https://testnet.bscscan.com'
+  97: 'https://testnet.bscscan.com'
 };
